@@ -1,0 +1,14 @@
+{
+	"dbconf":{
+		"driver":"mysql",
+		"dbname":"wallacopy",
+		"dbhost":"localhost",
+		"dbuser":"walladmin",
+		"dbpass":"walladmin"
+	},
+	"app":{
+		"title":"Wallacopy",
+		"version":"7.1"
+	}
+
+}
