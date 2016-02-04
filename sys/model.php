@@ -47,6 +47,12 @@
 		function beginTransaction(){
 			$this->db->beginTransaction();
 		}
+		function endTransaction(){
+			$this->db->endTransaction();
+		}
+		function cancelTransaction(){
+			$this->db->cancelTransaction();
+		}
 		function debugDumpParams(){
 			$this->stmt->debugDumpParams();
 		}
