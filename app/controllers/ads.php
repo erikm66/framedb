@@ -1,17 +1,18 @@
-<?php 
-
-	class User extends Controller{
+<?php
+	
+	class Ads extends Controller{
 		protected $model;
 		protected $view;
-
+		
 		function __construct($params){
 			parent::__construct($params);
-			$this->model=new mUser();
-			$this->model=new vUser();
+			$this->model=new mAds();
+			$this->view= new vAds();
+			
+			//echo 'Hello controller!';
 		}
-
 		function home(){
 			//Coder::codear($this->conf);
 	}
 
-	}
+}

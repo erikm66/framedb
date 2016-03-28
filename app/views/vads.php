@@ -5,12 +5,12 @@
 	 *  @author Toni
 	 * 
 	 * */
-	class vUser extends View{
+	class vAds extends View{
 
 		function __construct(){
 			parent::__construct();
 			
-			$this->tpl=Template::load('user',$this->view_data);
+			$this->tpl=Template::load('ads',$this->view_data);
 			
 		}
 

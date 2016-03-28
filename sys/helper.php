@@ -22,10 +22,17 @@
 	spl_autoload_register('MAutoload::ContLoader');
 	spl_autoload_register('MAutoload::ModLoader');
 	spl_autoload_register('MAutoload::ViewLoader');
-
+	spl_autoload_register('MAutoload::MapLoader');
 
 	class MAutoload{
-
+		static function MapLoader($class){
+			$filename=strtolower($class).'.php';
+			$file=ROOT.'map'.DS.$filename;
+			if(!file_exists($file)){
+				return false;
+			}
+			require $file;
+		}
 		static function SysLoader($class){
 			$filename=strtolower($class).'.php';
 			$file=ROOT.'sys'.DS.$filename;

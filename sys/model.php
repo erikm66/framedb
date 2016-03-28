@@ -32,10 +32,10 @@
  		}
 		
 		function resultSet(){
-			$this->stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 		function single(){
-			$this->stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 		function rowCount(){
 			return $this->stmt->rowCount();
@@ -48,10 +48,10 @@
 			$this->db->beginTransaction();
 		}
 		function endTransaction(){
-			$this->db->endTransaction();
+			$this->db->commit();
 		}
 		function cancelTransaction(){
-			$this->db->cancelTransaction();
+			$this->db->rollback();
 		}
 		function debugDumpParams(){
 			$this->stmt->debugDumpParams();

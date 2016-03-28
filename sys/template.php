@@ -13,9 +13,9 @@
 				extract($data);
 
 			}
-			
 			include APP.'tpl'.DS.'head.php';
 			include APP.'tpl'.DS.$contents.'.php';
+			include APP.'tpl'.DS.'side.php';
 			include APP.'tpl'.DS.'footer.php';
 		}
 	}

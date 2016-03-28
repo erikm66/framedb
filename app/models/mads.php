@@ -1,11 +1,13 @@
 <?php
 
-	class mUser extends Model{
+class mAds extends Model{
 
 		function __construct(){
 			parent::__construct();
 			
 		}
 
-	
-	}
+		}
+
+
+		?>

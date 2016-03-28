@@ -1,7 +1,7 @@
 
-	<div class="container">
-		<article>
-			<h2>Section M-framework</h2>
-			<p>Hello world</p>
+			
 		</article>
-	</div>
+	<?php 
+	$variable = "Home";
+	?>
+<div id="anuncios"></div><input type='submit' value='Back' id='back'><input type='submit' value='Next' id='next'>
