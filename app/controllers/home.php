@@ -31,6 +31,12 @@
     echo "No hay coincidencias";
   }
   }
+
+  function numpads(){
+    $numads=$this->model->numpads();
+    $this->json($numads);
+  }
+
 	function login(){
    if(isset($_POST['nom'])){
          $email=filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
@@ -66,6 +72,16 @@
 
  }
 
+function valorad(){
+  $idad=filter_input(INPUT_POST, 'idad', FILTER_SANITIZE_NUMBER_INT);
+  $ads=$this->model->valorad($idad);
+  if ($ads==TRUE){
+    $this->ajax_set(0);
+  }
+  else{
+    $this->ajax_set(-1);
+  }
+}
 
 function registrar(){
 
@@ -87,32 +103,5 @@ function registrar(){
              }
    }
  
-
-function addad($arr){
-    try{
-
-     $this->db->setAttribute( PDO::ATTR_AUTOCOMMIT, 0);
-     $this->db->beginTransaction();
-     $sql='INSERT INTO ads(iduser,image,image2,image3,title,description) VALUES(:ideu,:image,:image2,:image3,:title,:description)';
-     $stmt=$this->db->prepare($sql);
-     $stmt->bindParam(':ideu',$arr[0], PDO::PARAM_STR);
-     $stmt->bindParam(':image',$arr[1], PDO::PARAM_STR); 
-     $stmt->bindParam(':image2',$arr[2], PDO::PARAM_STR);
-     $stmt->bindParam(':image3',$arr[3], PDO::PARAM_STR);
-     $stmt->bindParam(':title',$arr[4], PDO::PARAM_INT);
-     $stmt->bindParam(':description',$arr[5], PDO::PARAM_INT);
-     $res=$stmt->execute();
-     $this->db->setAttribute( PDO::ATTR_AUTOCOMMIT, 1);
-     $this->db->commit();
-     if ($res){
-         return 1;
-      } else {
-       return 0;}
-    }catch(PDOException $e){
-          $this->db->rollback();
-          print $e->getMessage();
-   }
-
-}
 
 }

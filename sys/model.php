@@ -20,6 +20,8 @@
    				case is_string($value):
         			 $type=PDO::PARAM_STR;
        				 break;
+       			default:
+       				 $type=PDO::PARAM_STR;
 			}
 			$this->stmt->bindValue($param,$value,$type);
 		}

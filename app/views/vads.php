@@ -9,7 +9,6 @@
 
 		function __construct(){
 			parent::__construct();
-			
 			$this->tpl=Template::load('ads',$this->view_data);
 			
 		}

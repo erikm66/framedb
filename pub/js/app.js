@@ -1,11 +1,22 @@
 $(document).ready(function(){
 $("#register").hide();
 $("#moduser").hide();
- $("#updateb").hide();
- $("#adduser").hide();
-  $("#Error").hide();
+$("#updateb").hide();
+$("#adduser").hide();
+$("#Error").hide();
+$("#addad").hide();
+numeropaginas =0;
+numpag();
+/*$(".search").click(function()
+  {
+    buscads();
+  }
+  );*/
   numpaghome=0;
+  paginaactual=1;
   var location = window.location.href.split("/");
+  var lati;
+  var longit;
 /*loguin = 0;
 $(".logueate").click(function(){
   if(loguin==0){
@@ -27,16 +38,32 @@ $(".logueate").click(function(){
      
   
 });*/
+
+$("#dispad").click(function(){
+$("#addad").show();
+$("#addad").dialog();
+});
+
+$("#insertarad").click(function(){
+   isertarads();
+});
 $("#next").click(function(){
-  numpaghome=numpaghome+5;
+  if(paginaactual<numeropaginas){
+  numpaghome=numpaghome+10;
+  paginaactual++;
   cargads(numpaghome);
+  }
+  else{
+    alert("Estas en la ultima pagina");
+  }
 })
 $("#back").click(function(){
   if(numpaghome==0){
     alert("Ya estas en la primera pagina");
   }
   else{
-  numpaghome=numpaghome-5;
+    paginaactual--;
+  numpaghome=numpaghome-10;
   cargads(numpaghome);
   }
 })
@@ -113,6 +140,9 @@ carguser();
 }
 
 
+if(location[4]=='ads' || location[4]==""){
+cargadsuser(numpaghome);
+}
 
 if(location[4]=='home' || location[4]==""){
 cargads(numpaghome);
@@ -234,6 +264,26 @@ $("#consultar").html("<table><tbody><tr><th>Nombre</th><th>Pass</th><th>Email</t
 
   }
 
+function buscads(){
+valor=$("#buscar").val();
+$.ajax(
+{
+  url:'/M-master/home/busads',
+  type:'POST',
+  datatype:'json',
+  data:{val: valor},
+  success:function(data){
+    alert(data);
+    for(i=0;i<data.length;i++){ 
+  $("#anuncios").append("<div id='anuncio"+i+"'><h3>"+data[i].title+"</h3><img alt='IMAGEN ANUNCIO' src='"+data[i].image+"'></img><p>"+data[i].description+"</p></div>");
+ }
+
+  }
+}
+  )
+
+}
+
   function cargads(numpag){
 $.ajax({
   url:'/M-master/home/showads',
@@ -241,14 +291,98 @@ $.ajax({
   datatype:'json',
   data:{npag: numpag},
   success:function(respuesta){
-    if(respuesta!=null){
+    if(respuesta.length>0){
     $("#anuncios").empty();
  var data = JSON.parse(respuesta);
  for(i=0;i<data.length;i++){ 
-  $("#anuncios").append("<div id='anuncio"+i+"'><h3>"+data[i].title+"</h3><img alt='IMAGEN ANUNCIO' src='"+data[i].image+"'></img><p>"+data[i].description+"</p></div>");
+  $("#anuncios").append("<div id='anuncio"+i+"'><h3>"+data[i].title+"</h3><img alt='IMAGEN ANUNCIO' src='"+data[i].image+"'></img><p>"+data[i].description+"</p><p>Votos positivos:"+data[i].rating+"</p><button class='val' onclick='valorar("+data[i].idads+")' id="+data[i].idads+" ></button><div id='map"+i+"'></div></div>");
+ url = GMaps.staticMapURL({
+  size: [120, 150],
+  lat: data[i].latitud,
+  lng: data[i].longitud
+});
+
+$('<img/>').attr('src', url)
+  .appendTo('#map'+i);
  }
  }
   }
   })
+};
+
+function numpag(){
+$.ajax({
+  url:'/M-master/home/numpads',
+  type:'POST',
+  dataType:'json',
+  success:function(data){
+     numeropaginas=data[0].numeropaginas;
+  }
+
+})
 
 }
+
+ function cargadsuser(){
+$.ajax({
+  url:'/M-master/ads/showads',
+  type:'POST',
+  dataType:'json',
+  success:function(data){
+    if(data.length>0){
+    $("#anuncios").empty();
+ for(i=0;i<data.length;i++){ 
+  $("#anuncios").append("<div id='anuncio"+i+"'><h3>"+data[i].title+"</h3><img alt='IMAGEN ANUNCIO' src='"+data[i].image+"'></img><p>"+data[i].description+"</p><p>Votos positivos:"+data[i].rating+" </p></div>");
+ }
+  }
+  }
+})
+}
+function valorar(idanuncio){
+  $.ajax({
+    url:'/M-master/home/valorad',
+  type:'POST',
+  dataType:'json',
+  data:{idad: idanuncio},
+  success:function(data){
+    alert(98);
+  }
+  });
+}
+function isertarads(){
+  var lati="null";
+  var longit="null";
+   GMaps.geolocate({
+  success: function(position) {
+    lati = position.coords.latitude;
+    longit = position.coords.longitude;
+  },
+  error: function(error) {
+    alert('Geolocation failed: '+error.message);
+  },
+  not_supported: function() {
+    alert("Tu navegadol no sopolta la geolocalisasion");
+  }
+});
+  titulo=$("#titadd").val();
+  descripcion=$("#descadd").val();
+  imagen1=$("#img1add").val();
+  imagen2=$("#img2add").val();
+  imagen3=$("#img3add").val();
+  alert(titulo+" "+descripcion+" "+imagen1+" "+imagen2+" "+imagen3+" "+lati+" "+longit);
+  $.ajax({
+    url:'/M-master/ads/addad',
+  type:'POST',
+  dataType:'json',
+  data:{tit: titulo,desc: descripcion,img1: imagen1, img2: imagen2,img3: imagen3,lat: lati,longi: longit},
+  success:function(data){
+    alert('t');
+    showads();
+  },
+  error:function(data){
+    alert(JSON.stringify(data));
+  }
+  });
+
+}
+
